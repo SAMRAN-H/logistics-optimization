@@ -42,14 +42,14 @@
       <item row="3" column="1">
        <widget class="QLineEdit" name="beta">
         <property name="text">
-         <string>15</string>
+         <string>1</string>
         </property>
        </widget>
       </item>
       <item row="2" column="1">
        <widget class="QLineEdit" name="alpha">
         <property name="text">
-         <string>10</string>
+         <string>1</string>
         </property>
        </widget>
       </item>
@@ -76,7 +76,7 @@
       <item row="1" column="1">
        <widget class="QLineEdit" name="right">
         <property name="text">
-         <string>1</string>
+         <string>10</string>
         </property>
        </widget>
       </item>
@@ -105,6 +105,34 @@
        <widget class="QLabel" name="label_5">
         <property name="text">
          <string>β</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string>m</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0">
+       <widget class="QLabel" name="label_6">
+        <property name="text">
+         <string>n</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="QLineEdit" name="m">
+        <property name="text">
+         <string>10</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="1">
+       <widget class="QLineEdit" name="n">
+        <property name="text">
+         <string>100</string>
         </property>
        </widget>
       </item>

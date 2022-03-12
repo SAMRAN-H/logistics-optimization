@@ -1,6 +1,6 @@
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
 from matplotlib.pyplot import figure
-from core import plot_curve
+from core import plot_all
 
 
 class Canvas(FigureCanvasQTAgg):
@@ -9,8 +9,8 @@ class Canvas(FigureCanvasQTAgg):
         self.axis = self.figure.add_subplot(111)
         super().__init__(self.figure)
 
-    def plot_curve(self, alpha, beta, left, right, color):
+    def plot_curve(self, alpha, beta, left, right, m, n):
         self.axis.cla()
-        plot_curve(self.axis, alpha, beta, left, right, color)
+        plot_all(self.axis, alpha, beta, left, right, m, n)
         self.figure.canvas.draw_idle()
         self.figure.tight_layout()

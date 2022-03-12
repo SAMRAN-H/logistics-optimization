@@ -24,5 +24,7 @@ class MainWindow(QtWidgets.QMainWindow):
         right = float(self.right.text())
         alpha = float(self.alpha.text())
         beta = float(self.beta.text())
+        m = float(self.m.text())
+        n = float(self.n.text())
 
-        self.canvas.plot_curve(alpha, beta, left, right, 'blue')
+        self.canvas.plot_curve(alpha, beta, left, right, m, n)
