@@ -49,35 +49,36 @@ def plot_default_q(axis, alpha, beta, left, right, color):
     plot_analytic_minima(axis, alpha, beta, left, right, color=color)
 
 
-def plot_analytic_minima(axis, alpha, beta, A, B, color):
+def plot_analytic_minima(axis, alpha, beta, A, B, color, marker='o', markersize=12):
     x = (A*alpha + B*beta) / (alpha + beta)
     y = default_q(x, alpha, beta, A, B)
 
-    axis.plot(x, y, 'o', color=color,
-              label=rf'$Минимум\ Q(x)\ ({x:.3f}, {y:.3f})$')
+    axis.plot(x, y, marker, color=color,
+              label=rf'$Минимум\ Q(x)\ ({x:.3f}, {y:.3f})$', markersize=markersize)
 
 
 def plot_monte_carlo(axis, x, y, color):
-    plot_curve(axis, x, y, color, label=r'$Функция\ Q_{мк}(x)$')
+    plot_curve(axis, x, y, color, label=r'$Функция\ Q_{мк}(x)$', marker='1')
     plot_minima(axis, x, y, color, label=lambda x,
-                y: rf'$Минимум\ Q_{{мк}}(x)\ ({x:.3f}, {y:.3f})$')
+                y: rf'$Минимум\ Q_{{мк}}(x)\ ({x:.3f}, {y:.3f})$', marker='d')
 
 
 def plot_deviation(axis, x, y_mc, y_q_x_y, n, color):
     y = [np.sqrt(1/n * np.sum((y_mc[i] - y_q_x_y[i])**2))
          for i in range(len(x))]
 
-    plot_curve(axis, x, y, color, label=r'$Стандартное\ отклонение\ S(x)$')
+    plot_curve(axis, x, y, color,
+               label=r'$Стандартное\ отклонение\ S(x)$', marker='.')
 
 
-def plot_curve(axis, x, y, color, label):
-    axis.plot(x, y, color=color, label=label)
+def plot_curve(axis, x, y, color, label, marker='none', markersize=12):
+    axis.plot(x, y, marker, color=color, label=label, markersize=markersize)
 
 
-def plot_minima(axis, x, y, color, label):
+def plot_minima(axis, x, y, color, label, marker='o', markersize=12):
     min_index = np.argmin(y)
 
-    axis.plot(x[min_index], y[min_index], 'o', color=color,
+    axis.plot(x[min_index], y[min_index], marker, color=color, markersize=markersize,
               label=label(x[min_index], y[min_index]))
 
 
