@@ -1,7 +1,7 @@
 from PyQt6 import uic, QtWidgets, QtCore
 
 from pathlib import Path
-from core.core import plot_mc_and_deviation, plot_triangle_distribution, plot_analytic_triangle
+from core.core import plot_mc_and_deviation,  plot_analytic_distribution, plot_real_distribution
 
 from gui.canvas import Canvas
 
@@ -13,7 +13,7 @@ class MainWindow(QtWidgets.QMainWindow):
         uic.loadUi(Path(__file__).parent.resolve().joinpath('ui.ui'), self)
         self.setWindowTitle(title)
 
-        self.plot_func = [[plot_triangle_distribution, plot_analytic_triangle],
+        self.plot_func = [[plot_analytic_distribution, plot_real_distribution],
                           plot_mc_and_deviation]
 
         self.canvas = Canvas()
