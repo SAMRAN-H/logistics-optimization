@@ -1,17 +1,26 @@
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
 from matplotlib.pyplot import figure
-from core import plot_all, set_axis_props
+from core import set_axis_props
 
 
 class Canvas(FigureCanvasQTAgg):
     def __init__(self, size=(20, 20)) -> None:
         self.figure = figure(figsize=size)
         self.axis = self.figure.add_subplot(111)
-        set_axis_props(self.axis)
         super().__init__(self.figure)
 
-    def plot_curve(self, alpha, beta, left, right, m, n):
+    def plot_curve(self, plot_func, params):
         self.axis.cla()
-        plot_all(self.axis, alpha, beta, left, right, m, n)
+
+        if type(plot_func) == list:
+            for func in plot_func:
+                func(self.axis, params)
+        else:
+            plot_func(self.axis, params)
+
+        self.axis.legend(frameon=False)
+        self.axis.set(xlabel=r'$x$', ylabel=r'$Q(x)$')
+        set_axis_props(self.axis)
+
         self.figure.canvas.draw_idle()
         self.figure.tight_layout()
