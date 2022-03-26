@@ -3,6 +3,43 @@ import seaborn as sns
 
 C = 18
 
+# виды маркеров https://matplotlib.org/stable/api/markers_api.html
+GLOBAL_PROPS = {
+    'hist': {
+        'color': '#69e089',
+        'alpha': 0.8,
+        'edgecolor': '#1ca340',
+        'label': r'Реальное распределение',
+    },
+    'analytic': {
+        'color': '#3f35d4',
+        'alpha': 1.0,
+        'linewidth': 2,
+        'label': r'Аналитическое распределение',
+    },
+    'monte_carlo': {
+        'color': '#d42086',
+        'alpha': 1.0,
+        'marker': '1',
+        'markersize': 12,
+        'label': r'$Функция\ Q_{мк}(x)$',
+    },
+    'monte_carlo_minima': {
+        'color': '#d42086',
+        'alpha': 1.0,
+        'marker': 'd',
+        'markersize': 12,
+    },
+    'monte_carlo_minima_label': lambda x, y: rf'$Минимум\ Q_{{мк}}(x)\ ({x:.3f}, {y:.3f})$',
+    'deviation': {
+        'color': '#16adc4',
+        'alpha': 1.0,
+        'marker': '.',
+        'markersize': 12,
+        'label': r'$Стандартное\ отклонение\ S(x)$'
+    },
+}
+
 
 def set_axis_props(axis, facecolor='white', tick_color='black', spine_color='black', grid_color='grey', hide_ticks=True):
     axis.set_facecolor(facecolor)
@@ -37,33 +74,38 @@ def plot_mc_and_deviation(axis, params):
 
     y_mc = monte_carlo(y_q_x_y, n)
 
-    plot_monte_carlo(axis, x, y_mc, 'red')
-    plot_deviation(axis, x, y_mc, y_q_x_y, n, 'purple')
+    plot_monte_carlo(axis, x, y_mc)
+    plot_deviation(axis, x, y_mc, y_q_x_y, n)
 
 
-def plot_monte_carlo(axis, x, y, color):
-    plot_curve(axis, x, y, color, label=r'$Функция\ Q_{мк}(x)$', marker='1')
-    plot_minima(axis, x, y, color, label=lambda x,
-                y: rf'$Минимум\ Q_{{мк}}(x)\ ({x:.3f}, {y:.3f})$', marker='d')
+def plot_monte_carlo(axis, x, y):
+    global GLOBAL_PROPS
+
+    plot_curve(axis, x, y, **GLOBAL_PROPS['monte_carlo'])
+
+    plot_minima(
+        axis, x, y, label=GLOBAL_PROPS['monte_carlo_minima_label'], **GLOBAL_PROPS['monte_carlo_minima'])
 
 
-def plot_deviation(axis, x, y_mc, y_q_x_y, n, color):
+def plot_deviation(axis, x, y_mc, y_q_x_y, n):
+    global GLOBAL_PROPS
+
     y = [np.sqrt(1/n * np.sum((y_mc[i] - y_q_x_y[i])**2))
          for i in range(len(x))]
 
-    plot_curve(axis, x, y, color,
-               label=r'$Стандартное\ отклонение\ S(x)$', marker='.')
+    plot_curve(axis, x, y, **GLOBAL_PROPS['deviation'])
 
 
-def plot_curve(axis, x, y, color, label, marker='none', markersize=12):
-    axis.plot(x, y, marker, color=color, label=label, markersize=markersize)
+def plot_curve(axis, x, y, color, label, alpha, linewidth=2, marker='none', markersize=12):
+    axis.plot(x, y, marker, color=color, label=label,
+              markersize=markersize, alpha=alpha, linewidth=linewidth)
 
 
-def plot_minima(axis, x, y, color, label, marker='o', markersize=12):
+def plot_minima(axis, x, y, color, label, marker, markersize, alpha):
     min_index = np.argmin(y)
 
     axis.plot(x[min_index], y[min_index], marker, color=color, markersize=markersize,
-              label=label(x[min_index], y[min_index]))
+              label=label(x[min_index], y[min_index]), alpha=alpha)
 
 
 def q_x_y(x, y, alpha, beta):
@@ -82,8 +124,7 @@ def plot_triangle_distribution(axis, params):
     x = rng.triangular(
         params['left'], C, params['right'], int(params['n']))
 
-    sns.histplot(x, bins=20, label='треугольное распределение',
-                 color="blue", ax=axis,  stat='density')
+    sns.histplot(x, bins=20, ax=axis, stat='density', **GLOBAL_PROPS['hist'])
 
 
 def plot_analytic_triangle(axis, params):
@@ -102,4 +143,4 @@ def plot_analytic_triangle(axis, params):
     x = np.linspace(A, B, int(params['n']))
     y = z_vect(x)
 
-    plot_curve(axis, x, y, label='аналитическое', color='red')
+    plot_curve(axis, x, y, **GLOBAL_PROPS['analytic'])
