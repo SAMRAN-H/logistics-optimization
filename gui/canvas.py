@@ -19,7 +19,6 @@ class Canvas(FigureCanvasQTAgg):
             plot_func(self.axis, params)
 
         self.axis.legend(frameon=False)
-        self.axis.set(xlabel=r'$x$', ylabel=r'$Q(x)$')
         set_axis_props(self.axis)
 
         self.figure.canvas.draw_idle()

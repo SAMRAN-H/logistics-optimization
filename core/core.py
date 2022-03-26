@@ -77,6 +77,8 @@ def plot_mc_and_deviation(axis, params):
     plot_monte_carlo(axis, x, y_mc)
     plot_deviation(axis, x, y_mc, y_q_x_y, n)
 
+    axis.set(xlabel=r'$x$', ylabel=r'$Q(x)$')
+
 
 def plot_monte_carlo(axis, x, y):
     global GLOBAL_PROPS
@@ -125,6 +127,8 @@ def plot_triangle_distribution(axis, params):
         params['left'], C, params['right'], int(params['n']))
 
     sns.histplot(x, bins=20, ax=axis, stat='density', **GLOBAL_PROPS['hist'])
+
+    axis.set(xlabel=r'$x$', ylabel=r'$\phi(x)$')
 
 
 def plot_analytic_triangle(axis, params):
