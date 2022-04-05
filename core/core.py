@@ -81,9 +81,8 @@ def plot_mc_and_deviation(axis, params):
     n = params['n']
     C = params['c']
 
-    rng = np.random.default_rng()
     x = np.linspace(left, right, int(m) + 1)
-    y = rng.triangular(left, C, right, int(n))
+    y = get_real_distribution(left, right, int(n), C)
 
     vect_q_x_y = np.vectorize(q_x_y)
     y_q_x_y = np.array([vect_q_x_y(x_i, y, alpha, beta) for x_i in x])
@@ -135,40 +134,63 @@ def monte_carlo(y, n):
     return 1 / n * np.array([np.sum(y_val) for y_val in y])
 
 
-def plot_triangle_distribution(axis, params):
-    C = params['c']
-
+def get_real_distribution(A, B, n, C):
     rng = np.random.default_rng()
 
-    x = rng.triangular(
-        params['left'], C, params['right'], int(params['n']))
+    z = np.vectorize(distribution)
+    h = 1 / ((B - C) + (C - A)/2)
 
+    res_x = np.array([])
+
+    while True:
+        w = rng.random(1)[0] * h
+
+        if len(res_x) < n:
+            x = generate_random_numbers(A, B, int(B - A))
+            x = x[w < z(x, A, B, C)]
+            res_x = np.concatenate((res_x, x))
+        else:
+            res_x = res_x[0:n]
+            break
+
+    return res_x
+
+
+def plot_real_distribution(axis, params):
+    A = params['left']
+    B = params['right']
+    C = params['c']
+    n = int(params['n'])
     set_mean = params['set_mean']
     set_std = params['set_std']
+
+    x = get_real_distribution(A, B, n, C)
+
+    sns.histplot(x, bins=20, ax=axis, stat="density", **GLOBAL_PROPS['hist'])
 
     set_mean(np.mean(x))
     set_std(np.std(x))
 
-    sns.histplot(x, bins=20, ax=axis, stat='density', **GLOBAL_PROPS['hist'])
-
     axis.set(xlabel=r'$x$', ylabel=r'$\phi(x)$')
 
 
-def plot_analytic_triangle(axis, params):
-    C = params['c']
+def distribution(y, A, B, C):
 
+    h = 1 / ((B - C) + (C - A)/2)
+    if (y < C):
+        return h / 2
+    else:
+        return h
+
+
+def plot_analytic_distribution(axis, params):
     A = params['left']
     B = params['right']
+    C = params['c']
 
-    def z(y):
-        if (y < C):
-            return 2 * (y - A) / ((B - A)*(C - A))
-        else:
-            return 2 * (y - B) / ((B - A)*(C - B))
-
-    z_vect = np.vectorize(z)
+    z_vect = np.vectorize(distribution)
     x = np.linspace(A, B, int(params['n']))
-    y = z_vect(x)
+    y = z_vect(x, A, B, C)
 
     plot_curve(axis, x, y, **GLOBAL_PROPS['analytic'])
 
