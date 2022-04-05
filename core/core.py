@@ -201,6 +201,10 @@ def generate_random_numbers(low, high, size):
     return numbers
 
 
+def analytic_uniform(A, B, alpha, beta, x):
+    return 1 / (2 * (B - A)) * (alpha*(x-A)**2 + beta*(B-x)**2)
+
+
 def plot_uniform_mc(axis, params):
     alpha = params['alpha']
     beta = params['beta']
@@ -210,12 +214,10 @@ def plot_uniform_mc(axis, params):
     m = int(params['m'])
 
     x = np.linspace(left, right, int(m) + 1)
-    y = generate_random_numbers(left, right, n)
+    y = analytic_uniform(left, right, alpha, beta, x)
 
-    vect_q_x_y = np.vectorize(q_x_y)
-    y_q_x_y = np.array([vect_q_x_y(x_i, y, alpha, beta) for x_i in x])
+    plot_curve(axis, x, y, **GLOBAL_PROPS['monte_carlo_uniform'],
+               )
 
-    y_mc = monte_carlo(y_q_x_y, n)
-
-    plot_monte_carlo(axis, x, y_mc, GLOBAL_PROPS['monte_carlo_uniform'],
-                     GLOBAL_PROPS['monte_carlo_uniform_minima'], GLOBAL_PROPS['monte_carlo_uniform_minima_label'])
+    plot_minima(axis, x, y, **GLOBAL_PROPS['monte_carlo_uniform_minima'],
+                label=GLOBAL_PROPS['monte_carlo_uniform_minima_label'])
