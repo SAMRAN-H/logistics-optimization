@@ -19,6 +19,8 @@ class Canvas(FigureCanvasQTAgg):
             plot_func(self.axis, params)
 
         self.axis.legend(frameon=False)
+        # self.axis.legend(loc='upper center', bbox_to_anchor=(0.5, 1.05),
+        #           ncol=3, frameon=False)
         set_axis_props(self.axis)
 
         self.figure.canvas.draw_idle()

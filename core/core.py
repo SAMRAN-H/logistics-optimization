@@ -22,7 +22,7 @@ GLOBAL_PROPS = {
         'alpha': 1.0,
         'marker': '1',
         'markersize': 12,
-        'label': r'$Функция\ Q_{мк}(x)$',
+        'label': r'$Q_{мк}(x)$ треугольное',
     },
     'monte_carlo_minima': {
         'color': '#d42086',
@@ -38,6 +38,22 @@ GLOBAL_PROPS = {
         'markersize': 12,
         'label': r'$Стандартное\ отклонение\ S(x)$'
     },
+    'monte_carlo_uniform': {
+        'color': '#1bde4f',
+        'alpha': 1.0,
+        'marker': '+',
+        'markersize': 12,
+        'label': r'$Q_{мк}(x)$ равномерное',
+    },
+    'monte_carlo_uniform_minima': {
+        'color': '#1bde4f',
+        'alpha': 1.0,
+        'marker': '*',
+        'markersize': 12,
+    },
+    'monte_carlo_uniform_minima_label': lambda x, y: rf'$Минимум\ Q_{{мк}}(x)\ ({x:.3f}, {y:.3f})$',
+    'mean': r'$\bar{x}$ =',
+    'std': r'$\sigma$ ='
 }
 
 
@@ -64,6 +80,8 @@ def plot_mc_and_deviation(axis, params):
     right = params['right']
     m = params['m']
     n = params['n']
+    set_mean = params['set_mean']
+    set_std = params['set_std']
 
     rng = np.random.default_rng()
     x = np.linspace(left, right, int(m) + 1)
@@ -74,19 +92,23 @@ def plot_mc_and_deviation(axis, params):
 
     y_mc = monte_carlo(y_q_x_y, n)
 
-    plot_monte_carlo(axis, x, y_mc)
+    plot_monte_carlo(axis, x, y_mc, GLOBAL_PROPS['monte_carlo'],
+                     GLOBAL_PROPS['monte_carlo_minima'], GLOBAL_PROPS['monte_carlo_minima_label'])
     plot_deviation(axis, x, y_mc, y_q_x_y, n)
+
+    set_std(np.std(y_mc))
+    set_mean(np.mean(y_mc))
 
     axis.set(xlabel=r'$x$', ylabel=r'$Q(x)$')
 
 
-def plot_monte_carlo(axis, x, y):
+def plot_monte_carlo(axis, x, y, params, minima_params, label):
     global GLOBAL_PROPS
 
-    plot_curve(axis, x, y, **GLOBAL_PROPS['monte_carlo'])
+    plot_curve(axis, x, y, **params)
 
     plot_minima(
-        axis, x, y, label=GLOBAL_PROPS['monte_carlo_minima_label'], **GLOBAL_PROPS['monte_carlo_minima'])
+        axis, x, y, label=label, **minima_params)
 
 
 def plot_deviation(axis, x, y_mc, y_q_x_y, n):
@@ -148,3 +170,29 @@ def plot_analytic_triangle(axis, params):
     y = z_vect(x)
 
     plot_curve(axis, x, y, **GLOBAL_PROPS['analytic'])
+
+
+def generate_random_numbers(low, high, size):
+    numbers = np.random.random(size) * (high-low) + low
+
+    return numbers
+
+
+def plot_uniform_mc(axis, params):
+    alpha = params['alpha']
+    beta = params['beta']
+    left = params['left']
+    right = params['right']
+    n = int(params['n'])
+    m = int(params['m'])
+
+    x = np.linspace(left, right, int(m) + 1)
+    y = generate_random_numbers(left, right, n)
+
+    vect_q_x_y = np.vectorize(q_x_y)
+    y_q_x_y = np.array([vect_q_x_y(x_i, y, alpha, beta) for x_i in x])
+
+    y_mc = monte_carlo(y_q_x_y, n)
+
+    plot_monte_carlo(axis, x, y_mc, GLOBAL_PROPS['monte_carlo_uniform'],
+                     GLOBAL_PROPS['monte_carlo_uniform_minima'], GLOBAL_PROPS['monte_carlo_uniform_minima_label'])
