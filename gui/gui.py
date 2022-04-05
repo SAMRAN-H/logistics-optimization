@@ -22,9 +22,6 @@ class MainWindow(QtWidgets.QMainWindow):
         self.mean_text = ''
         self.std_text = ''
 
-        self.mean.setVisible(False)
-        self.std.setVisible(False)
-
         layout = self.tab_widget.widget(0).layout()
         layout.addWidget(self.canvas)
 
@@ -35,8 +32,8 @@ class MainWindow(QtWidgets.QMainWindow):
         layout = self.tab_widget.widget(tab_index).layout()
         layout.addWidget(self.canvas)
 
-        self.mean.setVisible(tab_index == 1)
-        self.std.setVisible(tab_index == 1)
+        self.mean.setVisible(tab_index == 0)
+        self.std.setVisible(tab_index == 0)
 
         self.tab_index = tab_index
         self.plot_curve()
@@ -48,6 +45,7 @@ class MainWindow(QtWidgets.QMainWindow):
         beta = float(self.beta.text())
         m = float(self.m.text())
         n = float(self.n.text())
+        c = int(self.c.text())
 
         params = {
             'alpha': alpha,
@@ -56,6 +54,7 @@ class MainWindow(QtWidgets.QMainWindow):
             'right': right,
             'n': n,
             'm': m,
+            'c': c,
             'set_mean': self.set_mean,
             'set_std': self.set_std
         }

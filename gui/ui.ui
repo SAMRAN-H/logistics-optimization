@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>953</width>
-    <height>575</height>
+    <width>866</width>
+    <height>669</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,7 +20,7 @@
    <property name="styleSheet">
     <string notr="true"/>
    </property>
-   <layout class="QVBoxLayout" name="verticalLayout">
+   <layout class="QHBoxLayout" name="horizontalLayout">
     <property name="leftMargin">
      <number>30</number>
     </property>
@@ -32,45 +32,31 @@
     </property>
     <item>
      <layout class="QGridLayout" name="gridLayout">
-      <item row="4" column="1">
-       <widget class="QLineEdit" name="m">
+      <item row="4" column="4">
+       <widget class="QLineEdit" name="n">
         <property name="text">
-         <string>100</string>
+         <string>1000</string>
         </property>
        </widget>
       </item>
-      <item row="0" column="4">
-       <widget class="QLabel" name="label_4">
+      <item row="0" column="3">
+       <widget class="QLabel" name="label_2">
         <property name="text">
-         <string>α</string>
+         <string>B</string>
         </property>
        </widget>
       </item>
-      <item row="0" column="1">
-       <widget class="QLineEdit" name="left">
-        <property name="text">
-         <string>0</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="5">
+      <item row="5" column="2">
        <widget class="QLineEdit" name="alpha">
         <property name="text">
          <string>1</string>
         </property>
        </widget>
       </item>
-      <item row="0" column="3">
-       <widget class="QLineEdit" name="right">
+      <item row="9" column="0" colspan="3">
+       <widget class="QLabel" name="mean">
         <property name="text">
-         <string>20</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="2">
-       <widget class="QLabel" name="label_6">
-        <property name="text">
-         <string>n</string>
+         <string>x̄ = </string>
         </property>
        </widget>
       </item>
@@ -81,24 +67,17 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="2">
-       <widget class="QLabel" name="label_2">
+      <item row="5" column="0">
+       <widget class="QLabel" name="label_4">
         <property name="text">
-         <string>B</string>
+         <string>α</string>
         </property>
        </widget>
       </item>
-      <item row="0" column="6">
-       <widget class="QLabel" name="label_5">
+      <item row="4" column="3">
+       <widget class="QLabel" name="label_6">
         <property name="text">
-         <string>β</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="7">
-       <widget class="QLineEdit" name="beta">
-        <property name="text">
-         <string>1</string>
+         <string>n</string>
         </property>
        </widget>
       </item>
@@ -109,14 +88,76 @@
         </property>
        </widget>
       </item>
-      <item row="4" column="3">
-       <widget class="QLineEdit" name="n">
+      <item row="9" column="3" colspan="2">
+       <widget class="QLabel" name="std">
         <property name="text">
-         <string>1000</string>
+         <string>σ =</string>
         </property>
        </widget>
       </item>
-      <item row="4" column="5">
+      <item row="4" column="2">
+       <widget class="QLineEdit" name="m">
+        <property name="text">
+         <string>30</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QLineEdit" name="left">
+        <property name="text">
+         <string>0</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="4">
+       <widget class="QLineEdit" name="right">
+        <property name="text">
+         <string>20</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="3">
+       <widget class="QLabel" name="label_5">
+        <property name="text">
+         <string>β</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="4">
+       <widget class="QLineEdit" name="beta">
+        <property name="text">
+         <string>1</string>
+        </property>
+       </widget>
+      </item>
+      <item row="10" column="2">
+       <spacer name="verticalSpacer">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="6" column="0">
+       <widget class="QLabel" name="label_7">
+        <property name="text">
+         <string>C</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="2">
+       <widget class="QLineEdit" name="c">
+        <property name="text">
+         <string>18</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="3" colspan="2">
        <widget class="QPushButton" name="pushButton">
         <property name="text">
          <string>Рассчитать</string>
@@ -126,44 +167,13 @@
      </layout>
     </item>
     <item>
-     <layout class="QGridLayout" name="gridLayout_2">
-      <property name="topMargin">
-       <number>0</number>
-      </property>
-      <property name="horizontalSpacing">
-       <number>40</number>
-      </property>
-      <item row="0" column="1">
-       <widget class="QLabel" name="std">
-        <property name="text">
-         <string>σ =</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="mean">
-        <property name="text">
-         <string>x̄ = </string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="2">
-       <spacer name="horizontalSpacer">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-     </layout>
-    </item>
-    <item>
      <widget class="QTabWidget" name="tab_widget">
+      <property name="minimumSize">
+       <size>
+        <width>606</width>
+        <height>0</height>
+       </size>
+      </property>
       <property name="styleSheet">
        <string notr="true">QTabWidget QWidget {border: none}</string>
       </property>

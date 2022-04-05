@@ -1,7 +1,6 @@
 import numpy as np
 import seaborn as sns
 
-C = 18
 
 # виды маркеров https://matplotlib.org/stable/api/markers_api.html
 GLOBAL_PROPS = {
@@ -80,8 +79,7 @@ def plot_mc_and_deviation(axis, params):
     right = params['right']
     m = params['m']
     n = params['n']
-    set_mean = params['set_mean']
-    set_std = params['set_std']
+    C = params['c']
 
     rng = np.random.default_rng()
     x = np.linspace(left, right, int(m) + 1)
@@ -95,9 +93,6 @@ def plot_mc_and_deviation(axis, params):
     plot_monte_carlo(axis, x, y_mc, GLOBAL_PROPS['monte_carlo'],
                      GLOBAL_PROPS['monte_carlo_minima'], GLOBAL_PROPS['monte_carlo_minima_label'])
     plot_deviation(axis, x, y_mc, y_q_x_y, n)
-
-    set_std(np.std(y_mc))
-    set_mean(np.mean(y_mc))
 
     axis.set(xlabel=r'$x$', ylabel=r'$Q(x)$')
 
@@ -141,12 +136,18 @@ def monte_carlo(y, n):
 
 
 def plot_triangle_distribution(axis, params):
-    global C
+    C = params['c']
 
     rng = np.random.default_rng()
 
     x = rng.triangular(
         params['left'], C, params['right'], int(params['n']))
+
+    set_mean = params['set_mean']
+    set_std = params['set_std']
+
+    set_mean(np.mean(x))
+    set_std(np.std(x))
 
     sns.histplot(x, bins=20, ax=axis, stat='density', **GLOBAL_PROPS['hist'])
 
@@ -154,7 +155,7 @@ def plot_triangle_distribution(axis, params):
 
 
 def plot_analytic_triangle(axis, params):
-    global C
+    C = params['c']
 
     A = params['left']
     B = params['right']
