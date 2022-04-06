@@ -21,7 +21,7 @@ GLOBAL_PROPS = {
         'alpha': 1.0,
         'marker': '1',
         'markersize': 12,
-        'label': r'$Q_{мк}(x)$ треугольное',
+        'label': r'$Q_{мк}(x)$ эксперементальные значения (Монте-карло)',
     },
     'monte_carlo_minima': {
         'color': '#d42086',
@@ -29,30 +29,26 @@ GLOBAL_PROPS = {
         'marker': 'd',
         'markersize': 12,
     },
-    'monte_carlo_minima_label': lambda x, y: rf'$Минимум\ Q_{{мк}}(x)\ ({x:.3f}, {y:.3f})$',
+    'monte_carlo_minima_label': lambda x, y: rf'Минимум $Q_{{мк}}(x)\ ({x:.3f}, {y:.3f})$',
     'deviation': {
         'color': '#16adc4',
         'alpha': 1.0,
         'marker': '.',
         'markersize': 12,
-        'label': r'$Стандартное\ отклонение\ S(x)$'
+        'label': r'Стандартное отклонение $S(x)$'
     },
-    'monte_carlo_uniform': {
+    'uniform': {
         'color': '#1bde4f',
         'alpha': 1.0,
-        'marker': '+',
-        'markersize': 12,
-        'label': r'$Q_{мк}(x)$ равномерное',
+        'label': r'Теоритические значения (равномерное распр.)',
     },
-    'monte_carlo_uniform_minima': {
+    'uniform_minima': {
         'color': '#1bde4f',
         'alpha': 1.0,
         'marker': '*',
         'markersize': 12,
     },
-    'monte_carlo_uniform_minima_label': lambda x, y: rf'$Минимум\ Q_{{мк}}(x)\ ({x:.3f}, {y:.3f})$',
-    'mean': r'$\bar{x}$ =',
-    'std': r'$\sigma$ ='
+    'uniform_minima_label': lambda x, y: rf'Минимум теории $({x:.3f}, {y:.3f})$',
 }
 
 
@@ -179,6 +175,16 @@ def generate_random_numbers(low, high, size):
     return numbers
 
 
+def generate_random_numbers(low, high, size):
+    numbers = np.random.random(size) * (high-low) + low
+
+    return numbers
+
+
+def analytic_uniform(A, B, alpha, beta, x):
+    return 1 / (2 * (B - A)) * (alpha*(x-A)**2 + beta*(B-x)**2)
+
+
 def plot_uniform_mc(axis, params):
     alpha = params['alpha']
     beta = params['beta']
@@ -188,12 +194,10 @@ def plot_uniform_mc(axis, params):
     m = int(params['m'])
 
     x = np.linspace(left, right, int(m) + 1)
-    y = generate_random_numbers(left, right, n)
+    y = analytic_uniform(left, right, alpha, beta, x)
 
-    vect_q_x_y = np.vectorize(q_x_y)
-    y_q_x_y = np.array([vect_q_x_y(x_i, y, alpha, beta) for x_i in x])
+    plot_curve(axis, x, y, **GLOBAL_PROPS['uniform'],
+               )
 
-    y_mc = monte_carlo(y_q_x_y, n)
-
-    plot_monte_carlo(axis, x, y_mc, GLOBAL_PROPS['monte_carlo_uniform'],
-                     GLOBAL_PROPS['monte_carlo_uniform_minima'], GLOBAL_PROPS['monte_carlo_uniform_minima_label'])
+    plot_minima(axis, x, y, **GLOBAL_PROPS['uniform_minima'],
+                label=GLOBAL_PROPS['uniform_minima_label'])
