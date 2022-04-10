@@ -176,11 +176,11 @@ def plot_real_distribution(axis, params):
 
 def distribution(y, A, B, C):
 
-    h = 1 / ((B - C) + (C - A)/2)
+    h = 1 / ((C - A) + (B - C)/2)
     if (y < C):
-        return h / 2
-    else:
         return h
+    else:
+        return h / 2
 
 
 def plot_analytic_distribution(axis, params):
