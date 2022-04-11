@@ -149,6 +149,9 @@ def plot_triangle_distribution(axis, params):
 
     axis.set(xlabel=r'$x$', ylabel=r'$\phi(x)$')
 
+    axis.plot([], [], ' ', label=fr'$\bar{{x}}$ = {np.mean(x):.3f}')
+    axis.plot([], [], ' ', label=fr'$\sigma$ = {np.std(x):.3f}')
+
 
 def plot_analytic_triangle(axis, params):
     C = params['c']
